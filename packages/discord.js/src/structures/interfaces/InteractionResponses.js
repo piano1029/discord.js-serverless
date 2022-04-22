@@ -65,14 +65,11 @@ class InteractionResponses {
   async deferReply(options = {}) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
     this.ephemeral = options.ephemeral ?? false;
-    await this.client.rest.post(Routes.interactionCallback(this.id, this.token), {
-      body: {
-        type: InteractionResponseType.DeferredChannelMessageWithSource,
-        data: {
-          flags: options.ephemeral ? MessageFlags.Ephemeral : undefined,
-        },
+    await this.client.callbacks.get(this.id)({
+      type: InteractionResponseType.DeferredChannelMessageWithSource,
+      data: {
+        flags: options.ephemeral ? MessageFlags.Ephemeral : undefined,
       },
-      auth: false,
     });
     this.deferred = true;
 
@@ -107,13 +104,9 @@ class InteractionResponses {
 
     const { body: data, files } = await messagePayload.resolveBody().resolveFiles();
 
-    await this.client.rest.post(Routes.interactionCallback(this.id, this.token), {
-      body: {
-        type: InteractionResponseType.ChannelMessageWithSource,
-        data,
-      },
-      files,
-      auth: false,
+    await this.client.callbacks.get(this.id)({
+      type: InteractionResponseType.ChannelMessageWithSource,
+      data,
     });
     this.replied = true;
 
@@ -189,11 +182,8 @@ class InteractionResponses {
    */
   async deferUpdate(options = {}) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
-    await this.client.rest.post(Routes.interactionCallback(this.id, this.token), {
-      body: {
-        type: InteractionResponseType.DeferredMessageUpdate,
-      },
-      auth: false,
+    await this.client.callbacks.get(this.id)({
+      type: InteractionResponseType.DeferredMessageUpdate,
     });
     this.deferred = true;
 
@@ -222,13 +212,9 @@ class InteractionResponses {
 
     const { body: data, files } = await messagePayload.resolveBody().resolveFiles();
 
-    await this.client.rest.post(Routes.interactionCallback(this.id, this.token), {
-      body: {
-        type: InteractionResponseType.UpdateMessage,
-        data,
-      },
-      files,
-      auth: false,
+    await this.client.callbacks.get(this.id)({
+      type: InteractionResponseType.UpdateMessage,
+      data,
     });
     this.replied = true;
 
@@ -241,11 +227,9 @@ class InteractionResponses {
    */
   async showModal(modal) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
-    await this.client.rest.post(Routes.interactionCallback(this.id, this.token), {
-      body: {
-        type: InteractionResponseType.Modal,
-        data: isJSONEncodable(modal) ? modal.toJSON() : this.client.options.jsonTransformer(modal),
-      },
+    await this.client.callbacks.get(this.id)({
+      type: InteractionResponseType.Modal,
+      data: isJSONEncodable(modal) ? modal.toJSON() : this.client.options.jsonTransformer(modal),
     });
     this.replied = true;
   }

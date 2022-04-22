@@ -1,6 +1,6 @@
 'use strict';
 
-const { InteractionType, ComponentType, ApplicationCommandType } = require('discord-api-types/v10');
+const { InteractionType, ComponentType, ApplicationCommandType, Routes } = require('discord-api-types/v10');
 const Action = require('./Action');
 const AutocompleteInteraction = require('../../structures/AutocompleteInteraction');
 const ButtonInteraction = require('../../structures/ButtonInteraction');
@@ -12,7 +12,7 @@ const UserContextMenuCommandInteraction = require('../../structures/UserContextM
 const Events = require('../../util/Events');
 
 class InteractionCreateAction extends Action {
-  handle(data) {
+  async handle(data) {
     const client = this.client;
 
     // Resolve and cache partial channels for Interaction#channel getter
@@ -66,6 +66,11 @@ class InteractionCreateAction extends Action {
       case InteractionType.ModalSubmit:
         InteractionClass = ModalSubmitInteraction;
         break;
+      case InteractionType.Ping:
+        client.emit(Events.Debug, `[INTERACTION] Replied to ping event`);
+        return client.callbacks.get(data.id)({
+          type: 1,
+        });
       default:
         client.emit(Events.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
         return;

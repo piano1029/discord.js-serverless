@@ -5,6 +5,7 @@ const { __exportStar } = require('tslib');
 // "Root" classes (starting points)
 exports.BaseClient = require('./client/BaseClient');
 exports.Client = require('./client/Client');
+exports.InteractionURLClient = require('./client/InteractionURLClient');
 exports.Shard = require('./sharding/Shard');
 exports.ShardClientUtil = require('./sharding/ShardClientUtil');
 exports.ShardingManager = require('./sharding/ShardingManager');
