@@ -1,7 +1,7 @@
 {
-  "name": "discord.js",
+  "name": "discord.js-serverless",
   "version": "14.0.0-dev",
-  "description": "A powerful library for interacting with the Discord API",
+  "description": "A fork of a powerful library for interacting with the Discord API",
   "scripts": {
     "test": "yarn docs:test && yarn test:typescript",
     "test:typescript": "tsc --noEmit && tsd",
@@ -9,7 +9,6 @@
     "format": "prettier --write . && eslint src --fix",
     "docs": "docgen --source ./src --custom ./docs/index.yml --root ../../ --output ./docs/docs.json",
     "docs:test": "docgen --source ./src --custom ./docs/index.yml --root ../../",
-    "prepublishOnly": "yarn lint && yarn test",
     "changelog": "git cliff --prepend ./CHANGELOG.md -l -c ./cliff.toml -r ../../ --include-path 'packages/discord.js/*'"
   },
   "main": "./src/index.js",
@@ -45,11 +44,10 @@
   "bugs": {
     "url": "https://github.com/discordjs/discord.js/issues"
   },
-  "homepage": "https://discord.js.org",
   "dependencies": {
-    "@discordjs/builders": "workspace:^",
-    "@discordjs/collection": "workspace:^",
-    "@discordjs/rest": "workspace:^",
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/collection": "^0.6.0",
+    "@discordjs/rest": "^0.4.1",
     "@sapphire/snowflake": "^3.2.1",
     "@types/ws": "^8.5.3",
     "discord-api-types": "^0.31.1",
