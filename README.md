@@ -1,3 +1,11 @@
+# Important
+
+This should not be used in production!
+
+Functions needed for usage:
+
+InteractionURLClient.ingest: Give it data, then it gives you data to send back to Discord. If it returns false, send a 401 back
+
 <div align="center">
   <br />
   <p>
